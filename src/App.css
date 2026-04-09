@@ -1,0 +1,41 @@
+/* En tu index.css */
+@keyframes blink {
+  0%, 100% { transform: scaleY(1); }
+  5% { transform: scaleY(0.1); }
+}
+
+.animate-blink {
+  animation: blink 4s infinite;
+}
+
+.animate-bounce-slow {
+  animation: bounce 3s infinite;
+}
+
+.animate-bounce-fast {
+  animation: bounce 0.5s infinite;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+/* --- Transiciones suaves para tarjetas y barras --- */
+.testimonial-card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.progress-bar-fill {
+  transition: width 0.5s ease-in-out;
+}
+
+/* --- Ocultar la barra de desplazamiento --- */
+::-webkit-scrollbar {
+  display: none; /* Para navegadores WebKit como Chrome, Safari */
+}
+
+body {
+  -ms-overflow-style: none;  /* Para Internet Explorer y Edge */
+  scrollbar-width: none;  /* Para Firefox */
+}
