@@ -37,7 +37,7 @@ export default function NavBar() {
 
   return (
     <>
-      <header className="bg-gradient-to-r from-[#5c28d8] via-[#8b3dfa] to-[#ff78c5] border-b border-[#8a22d1] shadow-xl sticky top-0 z-50 transition-all duration-300">
+      <header className="bg-[#7e1d91] border-b border-[#6a187a] shadow-xl sticky top-0 z-50 transition-all duration-300">
         <div className={`max-w-6xl mx-auto px-4 ${isScrolled ? 'py-2' : 'py-4'} flex flex-wrap items-center justify-between gap-4`}>
           <div className="flex items-center gap-3">
             <Link to="/" className="flex items-center justify-center rounded-3xl p-2 transition">
@@ -80,18 +80,18 @@ export default function NavBar() {
       />
 
       <div
-        className={`fixed top-0 left-0 h-full w-3/4 max-w-xs bg-gradient-to-b from-[#f9ecff] via-[#ffecf8] to-[#fff4fb] shadow-2xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-0 left-0 h-full w-3/4 max-w-xs bg-linear-to-b from-[#7e1d91] via-[#6a187a] to-[#5a146a] shadow-2xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="p-4">
             <div className="flex justify-between items-center mb-8">
-                 <Link to="/" className="flex items-center gap-3 rounded-2xl bg-white/90 border border-white/70 p-2 shadow-sm">
+                 <Link to="/" className="flex items-center gap-3 rounded-2xl bg-white/10 border border-white/20 p-2 shadow-sm">
                     <img src={yapeLogo} alt="Yape" className="w-12 h-12 object-contain" />
                 </Link>
                 <button
                     onClick={() => setMenuOpen(false)}
-                    className="text-[#8b3dfa] text-2xl"
+                    className="text-white text-2xl"
                     aria-label="Cerrar menú"
                 >
                     <FaTimes />
@@ -99,14 +99,14 @@ export default function NavBar() {
             </div>
           
             <nav className="flex flex-col gap-3 text-left">
-                <Link to="/" className="text-[#5d1bd5] font-semibold p-3 rounded-2xl bg-white/90 hover:bg-white transition-colors">Inicio</Link>
-                <Link to="/productos" className="text-[#5d1bd5] font-semibold p-3 rounded-2xl bg-white/90 hover:bg-white transition-colors">Productos</Link>
-                <Link to="/nosotros" className="text-[#5d1bd5] font-semibold p-3 rounded-2xl bg-white/90 hover:bg-white transition-colors">Nosotros</Link>
-                <Link to="/novedades" className="text-[#5d1bd5] font-semibold p-3 rounded-2xl bg-white/90 hover:bg-white transition-colors">Novedades</Link>
+                <Link to="/" className="text-white font-semibold p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-colors">Inicio</Link>
+                <Link to="/productos" className="text-white font-semibold p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-colors">Productos</Link>
+                <Link to="/nosotros" className="text-white font-semibold p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-colors">Nosotros</Link>
+                <Link to="/novedades" className="text-white font-semibold p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-colors">Novedades</Link>
                 {puedeVerIntranet && (
-                    <Link to="/intranet" className="text-[#5d1bd5] font-semibold p-3 rounded-2xl bg-white/90 hover:bg-white transition-colors">Intranet</Link>
+                    <Link to="/intranet" className="text-white font-semibold p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-colors">Intranet</Link>
                 )}
-                <div className="border-t border-[#e7d3f8] pt-4 mt-4">
+                <div className="border-t border-white/15 pt-4 mt-4">
                     <Login />
                 </div>
             </nav>
