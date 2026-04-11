@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import FormProductos from "../componentes/FormProductos";
 import GestionUsuarios from "../componentes/GestionUsuarios";
-import EstadoCompra from "../componentes/EstadoCompra";
 import AdminProductos from "../componentes/AdminProductos";
 import GestionReclamos from "../componentes/GestionReclamos";
 
@@ -16,7 +15,6 @@ export default function Intranet() {
   // La pestaña "Gestión de Productos" se elimina de la navegación principal
   const allTabs = [
     { id: 'listaProductos', label: 'Almacén de Productos', roles: ['admin', 'editor'], component: <AdminProductos /> },
-    { id: 'compras', label: 'Gestión de Compras', roles: ['admin', 'editor'], component: <EstadoCompra /> },
     { id: 'reclamos', label: 'Gestión de Reclamos', roles: ['admin'], component: <GestionReclamos /> },
     { id: 'usuarios', label: 'Gestión de Usuarios', roles: ['admin'], component: <GestionUsuarios /> },
   ];

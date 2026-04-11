@@ -21,8 +21,6 @@ export default function Footer() {
   const infoLinks = [
     { to: "/terminos-y-condiciones", text: "Términos y Condiciones" },
     { to: "/politica-de-privacidad", text: "Política de privacidad y Datos personales" },
-    { to: "/politica-de-cookies", text: "Política de Cookies" },
-    { to: "/consentimiento-de-cookies", text: "Consentimiento para el uso de cookies" },
   ];
 
   return (

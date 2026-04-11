@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/authContext";
 import PerfilForm from '../componentes/PerfilForm';
-import ComprasList from '../componentes/ComprasList';
 import FavoritosList from '../componentes/FavoritosList';
 
 export default function Perfil() {
@@ -20,7 +19,6 @@ export default function Perfil() {
   const tabs = [
     { id: 'perfil', label: 'Gestionar Perfil' },
     { id: 'favoritos', label: 'Mis Favoritos' },
-    { id: 'compras', label: 'Mis Compras' },
   ];
 
   const activeTabLabel = tabs.find(tab => tab.id === activeTab)?.label;
@@ -31,8 +29,6 @@ export default function Perfil() {
         return <PerfilForm user={usuarioActual} />;
       case 'favoritos':
         return <FavoritosList />;
-      case 'compras':
-        return <ComprasList />;
       default:
         return <PerfilForm user={usuarioActual} />;
     }

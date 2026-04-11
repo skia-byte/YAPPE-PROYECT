@@ -6,7 +6,6 @@ import './index.css';
 
 // Context Providers
 import { AuthProvider } from './context/authContext.jsx';
-import { CarritoProvider } from './context/CarritoContext.jsx';
 import { EdicionProvider } from './context/EdicionContext.jsx';
 import { ModalProvider } from './context/ModalContext.jsx';
 import { FavoritosProvider } from './context/FavoritosContext.jsx';
@@ -17,14 +16,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <AuthProvider>
         {/* Favoritos, Carrito y Edicion necesitan acceso a AuthProvider */}
         <FavoritosProvider>
-          <CarritoProvider>
-            <EdicionProvider>
-              {/* ModalProvider puede ir aquí o más afuera si no depende de los otros */}
-              <ModalProvider>
-                <App />
-              </ModalProvider>
-            </EdicionProvider>
-          </CarritoProvider>
+          <EdicionProvider>
+            {/* ModalProvider puede ir aquí o más afuera si no depende de los otros */}
+            <ModalProvider>
+              <App />
+            </ModalProvider>
+          </EdicionProvider>
         </FavoritosProvider>
       </AuthProvider>
     </BrowserRouter>

@@ -22,8 +22,6 @@ export const MascotProvider = ({ children }) => {
       triggerAction('thinking', '¿Qué cosita nueva probaremos? 🤔');
     } else if (path === '/productos') {
        triggerAction('happy', '¡Uff, cuántas opciones ricas! 🍰');
-    } else if (path === '/checkout') {
-       triggerAction('happy', '¡Ya casi es tuyo! 🛒');
     } else if (path.includes('/productos/')) {
        triggerAction('reading', 'Mira los detalles y opiniones 👀');
     } else if (path === '/nosotros') {

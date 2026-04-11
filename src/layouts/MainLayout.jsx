@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../componentes/NavBar";
-import { CarritoFlotante } from "../componentes/CarritoFlotante";
 import Footer from "../componentes/Footer";
 import { Toaster } from 'react-hot-toast'; // 1. Importar Toaster
 
@@ -11,7 +10,6 @@ export default function MainLayout() {
       <main className="flex-grow">
         <Outlet />
       </main>
-      <CarritoFlotante />
       <Footer />
       
       {/* 2. Añadir el componente Toaster para las notificaciones */}

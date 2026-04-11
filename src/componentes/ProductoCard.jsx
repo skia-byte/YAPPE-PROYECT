@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useCarrito } from "../context/CarritoContext";
 import { useAuth } from "../context/authContext";
 import { useFavoritos } from "../context/FavoritosContext";
 import { Heart } from "lucide-react";
@@ -11,15 +10,10 @@ export default function ProductoCard({
   mostrarFavoritos = true,
   esEnlace = true,
 }) {
-  const { agregarAlCarrito } = useCarrito();
   const { usuarioActual } = useAuth();
   const { esFavorito, agregarAFavoritos, removerDeFavoritos } = useFavoritos();
 
   const isFavorito = esFavorito(producto.id);
-
-  const handleAgregar = () => {
-    agregarAlCarrito(producto);
-  };
 
   const handleFavoritoClick = (e) => {
     e.stopPropagation();
@@ -113,17 +107,6 @@ export default function ProductoCard({
             stroke={isFavorito ? "#ef4444" : "currentColor"}
           />
         </button>
-      )}
-
-      {mostrarBoton && (
-        <div className="px-4 pb-4 mt-auto">
-          <button
-            onClick={handleAgregar}
-            className="w-full bg-[#d16170] text-white py-2 rounded-xl hover:bg-[#b84c68] transition-colors font-bold"
-          >
-            Agregar al carrito
-          </button>
-        </div>
       )}
     </div>
   );

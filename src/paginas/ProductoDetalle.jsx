@@ -3,8 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getDoc, doc, collection, query, where, onSnapshot, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useAuth } from '../context/authContext';
-import { useCarrito } from '../context/CarritoContext';
-import { ArrowLeft, Edit, Trash2, ShoppingCart, Loader, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Edit, Trash2, Loader, ChevronLeft, ChevronRight } from 'lucide-react';
 import RatingSummary from '../componentes/RatingSummary';
 import DejarComentario from '../componentes/DejarComentario';
 import ProductosRecomendados from '../componentes/ProductosRecomendados';
@@ -15,11 +14,9 @@ export default function ProductoDetalle() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { usuarioActual: usuario } = useAuth();
-  const { agregarAlCarrito, carrito } = useCarrito();
 
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [cantidad, setCantidad] = useState(1);
 
   const [comentarios, setComentarios] = useState([]);
   const [loadingComentarios, setLoadingComentarios] = useState(true);
@@ -97,10 +94,6 @@ export default function ProductoDetalle() {
     return { paginatedComentarios: paginated, totalPages: total };
   }, [comentarios, currentPage]);
 
-  const handleAgregarAlCarrito = () => {
-    if (producto) agregarAlCarrito(producto, cantidad);
-  };
-  
   const handleEliminarComentario = async (comentarioId) => {
     if (window.confirm('¿Seguro que quieres eliminar tu comentario?')) {
       try {
@@ -118,12 +111,9 @@ export default function ProductoDetalle() {
     } catch (error) { console.error('Error al actualizar comentario:', error); }
   };
 
-  const cambiarCantidad = (delta) => setCantidad((prev) => Math.max(1, prev + delta));
-
   if (loading) return <div className="flex justify-center items-center h-screen bg-[#fff9f8]"><Loader className="animate-spin text-[#d16170]" size={40}/></div>;
   if (!producto) return <div className="text-center py-20 bg-[#fff9f8] min-h-screen">Producto no encontrado.</div>;
 
-  const cantidadEnCarrito = carrito.find((item) => item.id === producto.id)?.cantidad || 0;
   const precioFinal = producto.descuento ? producto.precio - (producto.precio * producto.descuento / 100) : producto.precio;
 
   return (
@@ -152,19 +142,6 @@ export default function ProductoDetalle() {
                 <p className="text-[#d16170] font-bold text-5xl">S/{precioFinal.toFixed(2)}</p>
                 {producto.descuento > 0 && <p className="text-gray-400 line-through text-2xl">S/{producto.precio.toFixed(2)}</p>}
             </div>
-
-            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
-              <div className="flex items-center justify-center gap-3 bg-white rounded-full px-4 py-2 border-2 border-[#fdeff2]">
-                <button onClick={() => cambiarCantidad(-1)} className="text-3xl font-bold text-[#d16170] hover:text-[#b04a5f] transition disabled:opacity-50" disabled={cantidad <= 1}>-</button>
-                <span className="text-2xl font-bold text-gray-800 w-10 text-center select-none">{cantidad}</span>
-                <button onClick={() => cambiarCantidad(1)} className="text-3xl font-bold text-[#d16170] hover:text-[#b04a5f] transition">+</button>
-              </div>
-              <button onClick={handleAgregarAlCarrito} className="w-full sm:w-auto flex-grow flex items-center justify-center gap-3 bg-[#8f2133] hover:bg-[#7a1a2e] text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl focus:ring-4 focus:ring-[#d16170]/50">
-                <ShoppingCart size={22}/>
-                Añadir al Carrito
-              </button>
-            </div>
-            {cantidadEnCarrito > 0 && <p className="text-center sm:text-left text-green-700 font-semibold bg-green-100/80 px-4 py-2 rounded-lg">Ya tienes {cantidadEnCarrito} en tu carrito.</p>}
           </div>
         </div>
 
