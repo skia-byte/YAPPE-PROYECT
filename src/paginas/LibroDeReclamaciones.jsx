@@ -20,7 +20,7 @@ export default function LibroDeReclamaciones() {
                 Cuéntanos sobre tu inconveniente
             </h2>
             <p className="text-[#9c2007] leading-relaxed">
-                Conforme a lo establecido en el Reglamento del Libro de Reclamaciones del Código de Protección y Defensa del Consumidor, ponemos a tu disposición nuestro Libro de Reclamaciones Virtual. Para nosotros es muy importante conocer tu opinión.
+                Conforme a lo inti nuv pro pdopppestablecido en el Reglamento del Libro de Reclamaciones del Código de Protección y Defensa del Consumidor, ponemos a tu disposición nuestro Libro de Reclamaciones Virtual. Para nosotros es muy importante conocer tu opinión.
             </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

@@ -70,11 +70,10 @@ export default function Inicio() {
   const slide = slides[current];
 
   return (
-    <main className="bg-[#fff3f0] overflow-x-hidden">
-
+    <main className="overflow-x-hidden">
       {/* HERO */}
       <section
-        className="relative w-full min-h-[70vh] md:min-h-[85vh] flex items-center justify-center text-center px-4 py-20 overflow-hidden"
+        className="relative w-full min-h-[70vh] md:min-h-[85vh] flex items-center justify-center text-center px-4 pt-32 pb-20 overflow-hidden"
         style={{
           backgroundImage: `url(${slide.imagen})`,
           backgroundSize: "cover",
@@ -108,9 +107,8 @@ export default function Inicio() {
             <div
               key={index}
               onClick={() => setCurrent(index)}
-              className={`w-3 h-3 rounded-full cursor-pointer ${
-                current === index ? "bg-white" : "bg-white/40"
-              }`}
+              className={`w-3 h-3 rounded-full cursor-pointer ${current === index ? "bg-white" : "bg-white/40"
+                }`}
             />
           ))}
         </div>
