@@ -63,6 +63,14 @@ export default function Login({ isScrolled = false }) {
     }
   }
 
+  async function handleGoogleSignIn() {
+    try {
+      await iniciarConGoogle();
+    } catch (err) {
+      mostrarNotificacion("Error con Google", err.message);
+    }
+  }
+
   async function handleRegistro(e) {
     e.preventDefault();
     try {
@@ -124,7 +132,7 @@ export default function Login({ isScrolled = false }) {
           <input type="password" placeholder="Contraseña" value={loginPass} onChange={(e) => setLoginPass(e.target.value)} className="w-full bg-white border border-[#f5bfb2] text-[#7a1a0a] px-4 py-3 rounded-xl focus:ring-2 focus:ring-[#d8718c]" />
           <div className="grid grid-cols-2 gap-3 pt-4">
             <button type="submit" className="bg-[#d16170] text-white py-3 rounded-xl hover:bg-[#b84c68] transition font-semibold">Iniciar sesión</button>
-            <button type="button" onClick={iniciarConGoogle} className="flex items-center justify-center gap-2 border border-[#d8718c] text-[#d8718c] py-3 rounded-xl hover:bg-[#f5bfb2] transition font-semibold">
+            <button type="button" onClick={handleGoogleSignIn} className="flex items-center justify-center gap-2 border border-[#d8718c] text-[#d8718c] py-3 rounded-xl hover:bg-[#f5bfb2] transition font-semibold">
               <FcGoogle className="text-xl" /> Google
             </button>
           </div>
@@ -147,7 +155,7 @@ export default function Login({ isScrolled = false }) {
             </div>
             <div className="grid grid-cols-2 gap-3 pt-3">
                 <button type="submit" className="bg-[#d16170] text-white py-3 rounded-xl hover:bg-[#b84c68] transition font-semibold">Crear cuenta</button>
-                <button type="button" onClick={iniciarConGoogle} className="flex items-center justify-center gap-2 border border-[#d8718c] text-[#d8718c] py-3 rounded-xl hover:bg-[#f5bfb2] transition font-semibold">
+                <button type="button" onClick={handleGoogleSignIn} className="flex items-center justify-center gap-2 border border-[#d8718c] text-[#d8718c] py-3 rounded-xl hover:bg-[#f5bfb2] transition font-semibold">
                 <FcGoogle className="text-xl" /> Google
                 </button>
             </div>

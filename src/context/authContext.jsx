@@ -29,6 +29,7 @@ import {
 import toast from "react-hot-toast";
 
 const AuthContext = createContext();
+const adminEmails = [];
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -104,31 +105,41 @@ export const AuthProvider = ({ children }) => {
   };
 
   const iniciarConGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
 
-    const docRef = doc(db, "usuarios", user.uid);
-    const docSnap = await getDoc(docRef);
+      const docRef = doc(db, "usuarios", user.uid);
+      const docSnap = await getDoc(docRef);
 
-    if (!docSnap.exists()) {
-      const userRole = adminEmails.includes(user.email.toLowerCase())
-        ? "admin"
-        : "cliente";
-      const usernameFromEmail = user.email.split("@")[0].toLowerCase();
+      if (!docSnap.exists()) {
+        const email = user.email || "";
+        const userRole = adminEmails.includes(email.toLowerCase())
+          ? "admin"
+          : "cliente";
+        const usernameFromEmail = email.includes("@")
+          ? email.split("@")[0].toLowerCase()
+          : user.uid.slice(0, 8);
 
-      const newUserDoc = {
-        uid: user.uid,
-        correo: user.email,
-        nombre: user.displayName || "Usuario Google",
-        username: usernameFromEmail,
-        rol: userRole,
-        fotoURL: user.photoURL || "/default-user.png",
-        fechaCreacion: serverTimestamp(),
-      };
-      await setDoc(docRef, newUserDoc);
+        const newUserDoc = {
+          uid: user.uid,
+          correo: email,
+          nombre: user.displayName || "Usuario Google",
+          username: usernameFromEmail,
+          rol: userRole,
+          fotoURL: user.photoURL || "/default-user.png",
+          fechaCreacion: serverTimestamp(),
+        };
+        await setDoc(docRef, newUserDoc);
+      }
+
+      return result;
+    } catch (error) {
+      console.error("Error iniciarConGoogle:", error);
+      toast.error(error.message || "Error al iniciar sesión con Google");
+      throw error;
     }
-    return result;
   };
 
   const cerrarSesion = () => signOut(auth);
