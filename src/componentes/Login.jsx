@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/authContext";
 import { useModal as useAppModal } from "../context/ModalContext";
 import { FcGoogle } from "react-icons/fc";
-import { LogOut } from "lucide-react";
+import { FaSignOutAlt } from "react-icons/fa"; // Icono de la puerta que quieres
 import Modal from "./Modal";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Importamos useNavigate para la redirección
 
 // --- Lógica del Avatar ---
 const getInitials = (name) => {
@@ -30,11 +30,11 @@ const Avatar = ({ user, className = '' }) => {
     </div>
   );
 };
-// --- Fin de la lógica del Avatar ---
 
 export default function Login({ isScrolled = false }) {
   const { usuarioActual, iniciarSesion, registrarUsuario, iniciarConGoogle, cerrarSesion } = useAuth();
   const { mostrarModal: mostrarNotificacion } = useAppModal();
+  const navigate = useNavigate(); // Inicializamos el hook de navegación
 
   const [modalLoginOpen, setModalLoginOpen] = useState(false);
   const [modalRegistroOpen, setModalRegistroOpen] = useState(false);
@@ -53,6 +53,16 @@ export default function Login({ isScrolled = false }) {
       setModalRegistroOpen(false);
     }
   }, [usuarioActual, modalLoginOpen, modalRegistroOpen]);
+
+  // Función para cerrar sesión y mandar siempre al index
+  const handleLogout = async () => {
+    try {
+      await cerrarSesion(); // Llama a la función de Firebase en el context
+      navigate("/");        // Redirección forzada al inicio
+    } catch (err) {
+      console.error("Error al cerrar sesión:", err);
+    }
+  };
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -83,17 +93,6 @@ export default function Login({ isScrolled = false }) {
     }
   }
 
-  function switchToLogin() {
-    setModalRegistroOpen(false);
-    setModalLoginOpen(true);
-  }
-
-  function switchToRegister() {
-    setModalLoginOpen(false);
-    setModalRegistroOpen(true);
-  }
-
-  const nombreMostrado = usuarioActual?.nombre || "Usuario";
   const usernameMostrado = usuarioActual?.username || "usuario";
 
   return (
@@ -101,19 +100,30 @@ export default function Login({ isScrolled = false }) {
       {usuarioActual ? (
         <div className="w-full">
           <div className="flex items-center gap-2">
+            {/* Link a mi cuenta con la foto */}
             <Link
               to={`/perfil/${usernameMostrado}`}
-              className={`flex items-center gap-3 rounded-full px-3 py-2 transition ${isScrolled ? 'bg-white/90 shadow-sm' : 'bg-white/10 hover:bg-white/20'}`}
+              className={`flex items-center gap-3 rounded-full px-3 py-2 transition ${
+                isScrolled ? 'bg-white/90 shadow-sm' : 'bg-white/10 hover:bg-white/20'
+              }`}
             >
               <Avatar user={usuarioActual} className="w-10 h-10" />
-              <span className={`font-semibold hidden sm:inline-block ${isScrolled ? 'text-[#42346c]' : 'text-white'}`}>Mi cuenta</span>
+              <span className={`font-semibold hidden sm:inline-block ${
+                isScrolled ? 'text-[#42346c]' : 'text-white'
+              }`}>
+                Mi cuenta
+              </span>
             </Link>
+
+            {/* Único icono de cerrar sesión (Puerta) */}
             <button
-              onClick={cerrarSesion}
-              className={`p-2 rounded-full transition ${isScrolled ? 'text-[#42346c] hover:bg-slate-100' : 'text-white hover:bg-white/20'}`}
+              onClick={handleLogout}
+              className={`p-2 rounded-full transition hover:scale-110 ${
+                isScrolled ? 'text-[#7e1d91] hover:bg-slate-100' : 'text-white hover:bg-white/20'
+              }`}
               title="Cerrar sesión"
             >
-              <LogOut size={20} />
+              <FaSignOutAlt size={22} />
             </button>
           </div>
         </div>
@@ -126,6 +136,7 @@ export default function Login({ isScrolled = false }) {
         </button>
       )}
 
+      {/* --- Modales de Login y Registro --- */}
       <Modal isOpen={modalLoginOpen} onClose={() => setModalLoginOpen(false)} title="Bienvenido">
         <form onSubmit={handleLogin} className="space-y-4">
           <input type="text" placeholder="Correo o Nombre de usuario" value={loginIdentifier} onChange={(e) => setLoginIdentifier(e.target.value)} className="w-full bg-white border border-[#f5bfb2] text-[#7a1a0a] px-4 py-3 rounded-xl focus:ring-2 focus:ring-[#d8718c]"/>
@@ -139,7 +150,7 @@ export default function Login({ isScrolled = false }) {
         </form>
         <p className="text-[#7a1a0a] mt-6 text-center text-sm">
           ¿No tienes cuenta?{" "}
-          <button onClick={switchToRegister} className="text-[#d8718c] font-semibold hover:underline">Regístrate aquí</button>
+          <button onClick={() => { setModalLoginOpen(false); setModalRegistroOpen(true); }} className="text-[#d8718c] font-semibold hover:underline">Regístrate aquí</button>
         </p>
       </Modal>
 
@@ -162,7 +173,7 @@ export default function Login({ isScrolled = false }) {
         </form>
         <p className="text-[#7a1a0a] mt-5 text-sm">
           ¿Ya tienes cuenta?{" "}
-          <button onClick={switchToLogin} className="text-[#d8718c] font-semibold hover:underline">Inicia sesión</button>
+          <button onClick={() => { setModalRegistroOpen(false); setModalLoginOpen(true); }} className="text-[#d8718c] font-semibold hover:underline">Inicia sesión</button>
         </p>
       </Modal>
     </>
