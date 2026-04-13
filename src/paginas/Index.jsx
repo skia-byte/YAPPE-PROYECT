@@ -11,37 +11,32 @@ const slides = [
   {
     titulo: (
       <>
-        Yape <span className="text-[#fff3f0]">Oportunidades</span>
+        Yape <span className="text-[#18dbc1]">Oportunidades</span>
         <br />
         para Todos
       </>
     ),
-    texto:
-      "Da tu primer paso al mundo laboral con Yape. Descubre oportunidades reales en el sector financiero y empieza a construir tu futuro hoy.",
+    texto: "Da tu primer paso al mundo laboral con Yape.",
     imagen: slide4,
   },
   {
     titulo: "Tu primer paso al mundo laboral",
-    texto:
-      "Accede a oportunidades reales diseñadas para jóvenes como tú. Aprende, crece y construye tu futuro con nosotros.",
+    texto: "Accede a oportunidades reales diseñadas para jóvenes.",
     imagen: slide1,
   },
   {
     titulo: "Un espacio para todos",
-    texto:
-      "En Yape creemos en la inclusión. No importa tu experiencia, aquí encuentras oportunidades para desarrollarte.",
+    texto: "Creemos en la inclusión y el talento joven.",
     imagen: slide3,
   },
   {
     titulo: "Aprende mientras creces",
-    texto:
-      "Desarrolla habilidades clave, trabaja en equipo y adquiere experiencia en un entorno dinámico e innovador.",
+    texto: "Desarrolla habilidades en un entorno innovador.",
     imagen: slide2,
   },
   {
     titulo: "Tu futuro empieza hoy",
-    texto:
-      "Atrévete a dar el primer paso. Conecta con oportunidades y forma parte del cambio en el mundo financiero.",
+    texto: "Atrévete a dar el primer paso.",
     imagen: slide5,
   },
 ];
@@ -49,42 +44,52 @@ const slides = [
 export default function Inicio() {
   const [current, setCurrent] = useState(0);
 
+  const [count, setCount] = useState(0);
+  const finalNumber = 1000;
+
+  useEffect(() => {
+    let start = 0;
+
+    const interval = setInterval(() => {
+      start += 10;
+
+      if (start >= finalNumber) {
+        start = finalNumber;
+        clearInterval(interval);
+      }
+
+      setCount(start);
+    }, 20);
+
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      nextSlide();
+      setCurrent((prev) => (prev + 1) % slides.length);
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [current]);
-
-  const nextSlide = () => {
-    setCurrent((prev) => (prev + 1) % slides.length);
-  };
-
-  const prevSlide = () => {
-    setCurrent((prev) =>
-      prev === 0 ? slides.length - 1 : prev - 1
-    );
-  };
+  }, []);
 
   const slide = slides[current];
+  const digits = count.toString().padStart(4, "0").split("");
 
   return (
-    <main className="overflow-x-hidden">
+    <main className="overflow-x-hidden bg-gradient-to-br from-white via-purple-50 to-[#f5f3ff]">
+
       {/* HERO */}
       <section
-        className="relative w-full min-h-[70vh] md:min-h-[85vh] flex items-center justify-center text-center px-4 pt-32 pb-20 overflow-hidden"
+        className="relative w-full min-h-[80vh] flex items-center justify-center text-center px-4"
         style={{
           backgroundImage: `url(${slide.imagen})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        {/* overlay oscuro */}
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 bg-black/50"></div>
 
-        {/* contenido */}
-        <div className="relative z-10 flex flex-col items-center max-w-2xl">
+        <div className="relative z-10 max-w-2xl">
           <h1 className="text-5xl md:text-7xl font-extrabold text-white">
             {slide.titulo}
           </h1>
@@ -95,60 +100,73 @@ export default function Inicio() {
 
           <Link
             to="/productos"
-            className="mt-8 px-10 py-4 bg-[#18dbc1] text-white font-bold text-lg rounded-full hover:scale-105 transition"
+            className="inline-block mt-8 px-10 py-4 bg-[#18dbc1] text-white font-bold rounded-full hover:scale-105 transition"
           >
             Únete a nosotros
           </Link>
         </div>
+      </section>
 
-        {/* indicadores */}
-        <div className="absolute bottom-6 flex gap-2 z-10">
-          {slides.map((_, index) => (
+      {/* MENSAJE */}
+      <section className="py-16 text-center px-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+          No importa de dónde vienes, importa a dónde quieres llegar
+        </h2>
+
+        <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+          En Yape creemos en el talento joven 🚀
+        </p>
+      </section>
+
+      {/* 🔢 CONTADOR */}
+      <section className="py-24 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+          Jóvenes construyendo el futuro
+        </h2>
+
+        <p className="mt-3 text-gray-500">
+          Cada vez somos más 🚀
+        </p>
+
+        <div className="flex justify-center gap-4 mt-10">
+          {digits.map((num, index) => (
             <div
               key={index}
-              onClick={() => setCurrent(index)}
-              className={`w-3 h-3 rounded-full cursor-pointer ${current === index ? "bg-white" : "bg-white/40"
-                }`}
-            />
+              className="w-14 h-16 md:w-16 md:h-20 flex items-center justify-center 
+              text-2xl md:text-3xl font-bold 
+              bg-white/80 backdrop-blur-md 
+              border border-purple-100 
+              rounded-xl shadow-sm"
+            >
+              {num}
+            </div>
           ))}
         </div>
 
-        {/* flecha izquierda */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-5 top-1/2 -translate-y-1/2 z-10
-          w-12 h-12 rounded-full
-          bg-white/5 backdrop-blur-xl
-          border border-white/20
-          text-white text-xl
-          hover:bg-white/20 hover:scale-110
-          transition-all duration-300"
-        >
-          ❮
-        </button>
-
-        {/* flecha derecha */}
-        <button
-          onClick={nextSlide}
-          className="absolute right-5 top-1/2 -translate-y-1/2 z-10
-          w-12 h-12 rounded-full
-          bg-white/5 backdrop-blur-xl
-          border border-white/20
-          text-white text-xl
-          hover:bg-white/20 hover:scale-110
-          transition-all duration-300"
-        >
-          ❯
-        </button>
+        <p className="mt-4 text-gray-600">
+          jóvenes ya forman parte del Team Yape
+        </p>
       </section>
 
-      {/* PRODUCTOS */}
-      <section className="relative pt-12 pb-12 md:pt-24 md:pb-24">
-        <div className="absolute top-0 inset-x-0 h-full">
-          <div className="h-full w-full max-w-7xl mx-auto bg-white rounded-[50px] md:rounded-[100px] shadow-xl border border-[#f5bfb2]"></div>
-        </div>
+      {/* CTA FINAL */}
+      <section className="py-20 bg-gradient-to-r from-purple-900 to-purple-700 text-white text-center">
+        <h2 className="text-3xl md:text-4xl font-bold">
+          Tu futuro empieza hoy
+        </h2>
 
         
+
+        <p className="mt-4 text-purple-100">
+          No esperes tener experiencia. Empieza ahora.
+        </p>
+
+        <Link
+          to="/productos"
+          className="inline-block mt-8 px-10 py-4 bg-[#18dbc1] font-bold rounded-full hover:scale-105 transition"
+        >
+          Postula ahora
+        </Link>
+
       </section>
 
     </main>
