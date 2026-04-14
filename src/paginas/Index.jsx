@@ -1,19 +1,30 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+
+// HERO SLIDES
 import slide1 from "../componentes/img/slide1.png";
 import slide2 from "../componentes/img/slide2.png";
 import slide3 from "../componentes/img/slide3.png";
 import slide4 from "../componentes/img/slide4.png";
 import slide5 from "../componentes/img/slide5.png";
 
+// TARJETAS
+import motivo1 from "../componentes/img/motivo1.png";
+import motivo2 from "../componentes/img/motivo2.png";
+import motivo3 from "../componentes/img/motivo3.png";
+import motivo4 from "../componentes/img/motivo4.png";
+import motivo5 from "../componentes/img/motivo5.png";
+import motivo6 from "../componentes/img/motivo6.png";
+import motivo7 from "../componentes/img/motivo7.png";
+import motivo8 from "../componentes/img/motivo8.png";
+
 const slides = [
   {
     titulo: (
       <>
         Yape <span className="text-[#18dbc1]">Oportunidades</span>
-        <br />
-        para Todos
+        <br /> para Todos
       </>
     ),
     texto: "Da tu primer paso al mundo laboral con Yape.",
@@ -41,53 +52,105 @@ const slides = [
   },
 ];
 
+const tarjetas = [
+  { img: motivo1, titulo: "Primer empleo", desc: "Yape te da tu primera oportunidad laboral real." },
+  { img: motivo2, titulo: "Aprendizaje", desc: "Aprendes habilidades digitales y financieras." },
+  { img: motivo3, titulo: "Crecimiento", desc: "Puedes crecer dentro de la empresa." },
+  { img: motivo4, titulo: "Ambiente joven", desc: "Trabajas con jóvenes como tú." },
+  { img: motivo5, titulo: "Innovación", desc: "Formas parte de tecnología real." },
+  { img: motivo6, titulo: "Flexibilidad", desc: "Ambiente moderno y dinámico." },
+  { img: motivo7, titulo: "Impacto", desc: "Ayudas a millones de personas." },
+  { img: motivo8, titulo: "Futuro", desc: "Construyes tu carrera desde cero." },
+];
+
 export default function Inicio() {
   const [current, setCurrent] = useState(0);
-
   const [count, setCount] = useState(0);
+  const [activa, setActiva] = useState(null);
+
+  const scrollRef = useRef(null);
   const finalNumber = 1000;
 
+  // CONTADOR
   useEffect(() => {
     let start = 0;
+    const duration = 2000;
+    const increment = finalNumber / (duration / 16);
 
-    const interval = setInterval(() => {
-      start += 10;
-
+    const counter = setInterval(() => {
+      start += increment;
       if (start >= finalNumber) {
         start = finalNumber;
-        clearInterval(interval);
+        clearInterval(counter);
       }
+      setCount(Math.floor(start));
+    }, 16);
 
-      setCount(start);
-    }, 20);
-
-    return () => clearInterval(interval);
+    return () => clearInterval(counter);
   }, []);
 
+  // HERO AUTO
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
     }, 4000);
-
     return () => clearInterval(interval);
   }, []);
+
+  const nextSlide = () => {
+    setCurrent((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrent((prev) =>
+      prev === 0 ? slides.length - 1 : prev - 1
+    );
+  };
+
+  const scrollLeft = () => {
+    scrollRef.current.scrollBy({ left: -500, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    scrollRef.current.scrollBy({ left: 500, behavior: "smooth" });
+  };
 
   const slide = slides[current];
   const digits = count.toString().padStart(4, "0").split("");
 
   return (
-    <main className="overflow-x-hidden bg-gradient-to-br from-white via-purple-50 to-[#f5f3ff]">
+    <main className="overflow-x-hidden bg-white">
 
-      {/* HERO */}
+      {/* HERO CON FLECHAS */}
       <section
-        className="relative w-full min-h-[80vh] flex items-center justify-center text-center px-4"
+        className="relative w-full h-[90vh] flex items-center justify-center text-center px-4"
         style={{
           backgroundImage: `url(${slide.imagen})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-black/60"></div>
+
+        {/* Flecha izquierda */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-6 top-1/2 -translate-y-1/2 z-20
+          bg-white/30 hover:bg-white/60 backdrop-blur-md
+          w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
+        >
+          ‹
+        </button>
+
+        {/* Flecha derecha */}
+        <button
+          onClick={nextSlide}
+          className="absolute right-6 top-1/2 -translate-y-1/2 z-20
+          bg-white/30 hover:bg-white/60 backdrop-blur-md
+          w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
+        >
+          ›
+        </button>
 
         <div className="relative z-10 max-w-2xl">
           <h1 className="text-5xl md:text-7xl font-extrabold text-white">
@@ -107,52 +170,47 @@ export default function Inicio() {
         </div>
       </section>
 
-      {/* MENSAJE */}
-      <section className="py-16 text-center px-6">
+      {/* MENSAJE + CONTADOR */}
+      <section className="pt-16 pb-10 text-center px-6">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
           No importa de dónde vienes, importa a dónde quieres llegar
         </h2>
 
-        <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+        <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
           En Yape creemos en el talento joven 🚀
         </p>
-      </section>
 
-      {/* 🔢 CONTADOR */}
-      <section className="py-24 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-          Jóvenes construyendo el futuro
-        </h2>
+        <div className="mt-10">
+          <h3 className="text-2xl md:text-3xl font-bold text-gray-800">
+            Jóvenes construyendo el futuro
+          </h3>
 
-        <p className="mt-3 text-gray-500">
-          Cada vez somos más 🚀
-        </p>
+          <div className="flex justify-center items-center gap-4 mt-6">
+            {digits.map((num, index) => (
+              <div
+                key={index}
+                className="w-20 h-24 flex items-center justify-center text-3xl font-bold bg-white border-2 rounded-xl shadow-lg"
+              >
+                {num}
+              </div>
+            ))}
+          </div>
 
-        <div className="flex justify-center gap-4 mt-10">
-          {digits.map((num, index) => (
-            <div
-              key={index}
-              className="w-14 h-16 md:w-16 md:h-20 flex items-center justify-center 
-              text-2xl md:text-3xl font-bold 
-              bg-white/80 backdrop-blur-md 
-              border border-purple-100 
-              rounded-xl shadow-sm"
-            >
-              {num}
-            </div>
-          ))}
+          <p className="mt-3 text-gray-600">
+            jóvenes ya forman parte del{" "}
+            <span className="font-semibold text-[#18dbc1]">
+              Team Yape
+            </span>
+          </p>
         </div>
-
-        <p className="mt-4 text-gray-600">
-          jóvenes ya forman parte del Team Yape
-        </p>
       </section>
 
-      {/* CTA FINAL */}
-      <section className="py-20 bg-gradient-to-r from-purple-900 to-purple-700 text-white text-center">
-        <h2 className="text-3xl md:text-4xl font-bold">
-          Tu futuro empieza hoy
+      {/* CARRUSEL */}
+      <section className="py-28 px-4 text-center">
+        <h2 className="text-5xl font-extrabold mb-16">
+          ¿Por qué trabajar en <span className="text-[#18dbc1]">Yape</span>?
         </h2>
+
 
         
 
@@ -166,6 +224,67 @@ export default function Inicio() {
         >
           Postula ahora
         </Link>
+
+        <div className="relative max-w-[1600px] mx-auto">
+
+          <button
+            onClick={scrollLeft}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-20
+            bg-white/30 hover:bg-white/60 backdrop-blur-lg
+            w-16 h-16 rounded-full shadow-lg flex items-center justify-center"
+          >
+            ‹
+          </button>
+
+          <div
+            ref={scrollRef}
+            className="flex gap-12 overflow-x-auto scroll-smooth px-24 no-scrollbar"
+          >
+            {tarjetas.map((item, index) => (
+              <div key={index} className="flex-shrink-0">
+                <div
+                  onClick={() => setActiva(index)}
+                  className={`
+                    w-[520px] md:w-[600px]
+                    h-[380px] md:h-[480px]
+                    relative cursor-pointer rounded-2xl overflow-hidden
+                    transition-all duration-500
+                    ${activa === index ? "scale-110 z-10" : "hover:scale-105"}
+                  `}
+                >
+                  <img
+                    src={item.img}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+
+                  <div
+                    className={`absolute inset-0 flex flex-col justify-center items-center text-white text-center p-8
+                    transition-all duration-500
+                    ${
+                      activa === index
+                        ? "bg-black/70 opacity-100"
+                        : "bg-black/0 opacity-0 hover:bg-black/50 hover:opacity-100"
+                    }`}
+                  >
+                    <h3 className="font-bold text-4xl">{item.titulo}</h3>
+                    <p className="text-xl mt-4">{item.desc}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={scrollRight}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-20
+            bg-white/30 hover:bg-white/60 backdrop-blur-lg
+            w-16 h-16 rounded-full shadow-lg flex items-center justify-center"
+          >
+            ›
+          </button>
+
+        </div>
 
       </section>
 
