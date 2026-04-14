@@ -16,6 +16,7 @@ const Nosotros = lazy(() => import("./paginas/Nosotros"));
 const Productos = lazy(() => import("./paginas/Productos"));
 const Perfil = lazy(() => import("./paginas/Perfil"));
 const Intranet = lazy(() => import("./paginas/Intranet"));
+
 const LibroDeReclamaciones = lazy(
   () => import("./paginas/LibroDeReclamaciones"),
 );
@@ -41,6 +42,7 @@ function App() {
             <Route path="/productos" element={<Productos />} />
             <Route path="/perfil/:username" element={<Perfil />} />
             <Route path="/intranet" element={<Intranet />} />
+
             <Route
               path="/libro-de-reclamaciones"
               element={<LibroDeReclamaciones />}

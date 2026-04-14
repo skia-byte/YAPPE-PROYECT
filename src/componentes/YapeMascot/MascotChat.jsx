@@ -1,229 +1,151 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { ChevronDown, Send } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
-import { useMascot } from "../../context/MascotContext";
-import {
-  Send,
-  MessageCircle,
-  ArrowDown,
-  User,
-  LifeBuoy,
-  ShoppingBag,
-} from "lucide-react";
+import mascotaYapeImg from "../img/yape-mascot.png";
 
-const MascotChat = ({ onClose }) => {
+const MascotChat = ({ onClose, onOpenLogin }) => {
   const { usuarioActual } = useAuth();
-  const { triggerAction } = useMascot();
   const navigate = useNavigate();
-  const location = useLocation();
-  const chatEndRef = useRef(null);
-
-  const [history, setHistory] = useState([]);
-  const [options, setOptions] = useState([]);
-  const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
-  // 1. Lógica de inicialización por Ruta
-  useEffect(() => {
-    const initChat = async () => {
-      setHistory([]); // Limpiar historial al abrir
-      await delay(400);
+  // ESTADO PARA LA CONVERSACIÓN
+  const [mensajes, setMensajes] = useState([
+    {
+      texto: "¡Hola! Soy YapeMascot. 💜 ¿Buscas chamba o tienes alguna duda?",
+      emisor: "bot",
+    },
+  ]);
 
-      const nombre = usuarioActual?.displayName || "Yaperito";
-
-      if (location.pathname.includes("/perfil")) {
-        addMessage(
-          "bot",
-          `¡Hola ${nombre}! Estás en tu zona personal. ¿Quieres que te ayude a actualizar tus datos?`,
-        );
-        setOptions([
-          { label: "Editar Perfil ✍️", action: "nav", path: "/perfil/edit" },
-          { label: "Ver puestos de trabajo", action: "nav", path: "/pedidos" },
-          { label: "Regresar al Inicio", action: "nav", path: "/" },
-        ]);
-      } else if (location.pathname.includes("/reclamos")) {
-        triggerAction("thinking");
-        addMessage(
-          "bot",
-          "Lamento que algo no haya salido bien. Cuéntame, ¿cuál es el inconveniente?",
-        );
-        setOptions([
-          {
-            label: "Pedido no llegó ❌",
-            action: "reclamar",
-            type: "logistica",
-          },
-          { label: "Mala atención", action: "reclamar", type: "calidad" },
-          { label: "Hablar con soporte 👤", action: "soporte" },
-        ]);
-      } else {
-        addMessage(
-          "bot",
-          `¡Hola! Soy YapeMascot. 💜 ¿En qué puedo ayudarte hoy?`,
-        );
-        showMainMenu();
-      }
-    };
-
-    initChat();
-  }, [location.pathname]);
-
-  // Scroll automático
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [history, options]);
-
-  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-  const addMessage = (sender, text) =>
-    setHistory((prev) => [...prev, { sender, text }]);
-
-  const showMainMenu = () => {
-    setOptions([
-      {
-        label: "Ver Puestos disponibles 📄",
-        action: "nav",
-        path: "/productos",
-      },
-      { label: "Ir a mi Perfil 👤", action: "nav", path: "/perfil" },
-      { label: "Tengo un Reclamo 🚩", action: "nav", path: "/reclamos" },
-    ]);
-  };
-
-  const handleOptionClick = async (option) => {
-    addMessage("user", option.label);
-    setOptions([]);
-    await delay(600);
-
-    switch (option.action) {
-      case "nav":
-        addMessage("bot", "¡Entendido! Vamos para allá...");
-        await delay(500);
-        navigate(option.path);
-        break;
-
-      case "reclamar":
-        addMessage(
-          "bot",
-          `He tomado nota sobre el problema de ${option.type}. Por favor, escribe los detalles abajo.`,
-        );
-        setInputVisible(true);
-        break;
-
-      case "soporte":
-        addMessage(
-          "bot",
-          "Conectando con un agente... Por favor espera un momento.",
-        );
-        break;
-
-      default:
-        showMainMenu();
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleSendMessage = (e) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
-    addMessage("user", inputValue);
-    setInputValue("");
-    setInputVisible(false);
 
-    // Aquí conectarías con Firebase para guardar el mensaje
+    // 1. Agregar mensaje del usuario
+    const nuevoMensaje = { texto: inputValue, emisor: "usuario" };
+    setMensajes((prev) => [...prev, nuevoMensaje]);
+    setInputValue("");
+
+    // 2. Simular respuesta del bot para que no se quede vacío
     setTimeout(() => {
-      addMessage(
-        "bot",
-        "¡Mensaje recibido! Revisaremos tu caso de inmediato. ✅",
-      );
-      showMainMenu();
+      setMensajes((prev) => [
+        ...prev,
+        {
+          texto:
+            "¡Ntp! Déjame reviso esa información por ti. 💜 ¿En qué más puedo ayudarte?",
+          emisor: "bot",
+        },
+      ]);
     }, 1000);
   };
 
+  const handleProfileNavigation = () => {
+    if (usuarioActual) {
+      navigate(`/perfil/${usuarioActual.displayName || "usuario"}`);
+    } else {
+      onOpenLogin();
+      onClose();
+    }
+  };
+
   return (
-    <div className="w-[320px] h-[450px] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-gray-100 flex-none">
-      {/* HEADER: Gradiente Turquesa Yape */}
-      <div className="bg-gradient-to-r from-[#00d1b2] to-[#00bfa5] p-5 text-white flex justify-between items-center shadow-md">
+    <div className="w-[calc(100vw-2rem)] sm:w-[350px] bg-white rounded-[2rem] shadow-2xl border border-gray-100 overflow-hidden flex flex-col animate-in slide-in-from-bottom-5 duration-300">
+      {/* CABECERA */}
+      <div className="bg-[#00d1b2] p-4 sm:p-5 flex items-center justify-between text-white">
         <div className="flex items-center gap-3">
-          <div className="bg-white/20 p-2 rounded-full">
-            <MessageCircle size={20} />
+          <div className="relative">
+            <img
+              src={mascotaYapeImg}
+              alt="Mascota"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 p-1 object-contain"
+            />
+            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-[#00d1b2] rounded-full"></span>
           </div>
           <div>
-            <h3 className="font-bold text-sm leading-tight">YapeMascot</h3>
-            <span className="text-[10px] text-white/80 flex items-center gap-1">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>{" "}
+            <h3 className="font-bold text-base sm:text-lg leading-none">
+              YapeMascot
+            </h3>
+            <p className="text-[10px] opacity-90 font-medium italic">
               En línea ahora
-            </span>
+            </p>
           </div>
         </div>
         <button
           onClick={onClose}
-          className="hover:bg-black/10 p-2 rounded-full transition-colors"
+          className="hover:bg-black/10 p-1 rounded-full transition-colors"
         >
-          <ArrowDown size={20} />
+          <ChevronDown size={28} />
         </button>
       </div>
 
-      {/* BODY: Área de mensajes */}
-      <div className="flex-1 p-4 overflow-y-auto bg-[#f9fbfb] flex flex-col gap-4 custom-scrollbar">
-        {history.map((msg, i) => (
+      {/* CUERPO DEL CHAT DINÁMICO */}
+      <div className="p-4 sm:p-5 bg-gray-50 flex-1 max-h-[45vh] sm:max-h-[380px] overflow-y-auto space-y-4 flex flex-col">
+        {mensajes.map((msg, index) => (
           <div
-            key={i}
-            className={`max-w-[85%] p-3.5 rounded-2xl text-[13px] leading-relaxed shadow-sm transition-all ${
-              msg.sender === "bot"
-                ? "bg-white text-gray-700 self-start border-tl-none rounded-tl-none"
-                : "bg-[#00d1b2] text-white self-end rounded-tr-none"
-            }`}
+            key={index}
+            className={`flex flex-col ${msg.emisor === "usuario" ? "items-end" : "items-start"} animate-in fade-in slide-in-from-bottom-2`}
           >
-            {msg.text}
+            <div
+              className={`p-3 px-4 rounded-2xl shadow-sm max-w-[85%] text-sm leading-relaxed ${
+                msg.emisor === "usuario"
+                  ? "bg-[#7422ff] text-white rounded-tr-none"
+                  : "bg-white text-gray-700 border border-gray-100 rounded-tl-none"
+              }`}
+            >
+              {msg.texto}
+            </div>
           </div>
         ))}
 
-        {/* Opciones Interactivas */}
-        {options.length > 0 && (
-          <div className="flex flex-col gap-2 mt-2">
-            {options.map((opt, i) => (
-              <button
-                key={i}
-                onClick={() => handleOptionClick(opt)}
-                className="w-full py-2.5 px-4 bg-white border border-[#00d1b2] text-[#00d1b2] rounded-xl text-xs font-bold hover:bg-[#00d1b2] hover:text-white transition-all duration-200 text-left shadow-sm flex justify-between items-center group"
-              >
-                {opt.label}
-                <span className="opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0 transition-all">
-                  →
-                </span>
-              </button>
-            ))}
-          </div>
-        )}
-        <div ref={chatEndRef} />
+        {/* BOTONES DE ACCIÓN (Chips) - Se muestran siempre abajo del primer mensaje */}
+        <div className="flex flex-wrap gap-2 pt-2">
+          <Link
+            to="/productos"
+            className="py-2 px-4 bg-white border border-[#00d1b2] text-[#00d1b2] rounded-full text-[11px] font-bold hover:bg-[#00d1b2] hover:text-white transition-all shadow-sm"
+          >
+            Ver Puestos 📄
+          </Link>
+          <button
+            onClick={handleProfileNavigation}
+            className="py-2 px-4 bg-white border border-[#00d1b2] text-[#00d1b2] rounded-full text-[11px] font-bold hover:bg-[#00d1b2] hover:text-white transition-all shadow-sm"
+          >
+            Mi Perfil 👤
+          </button>
+          <Link
+            to="/consultas"
+            className="py-2 px-4 bg-white border border-[#00d1b2] text-[#00d1b2] rounded-full text-[11px] font-bold hover:bg-[#00d1b2] hover:text-white transition-all shadow-sm"
+          >
+            Ayuda 🚩
+          </Link>
+        </div>
       </div>
 
-      {/* FOOTER: Input dinámico */}
-      {inputVisible ? (
-        <form
-          onSubmit={handleSubmit}
-          className="p-4 bg-white border-t border-gray-100 flex gap-2 items-center"
+      {/* BARRA DE ENTRADA */}
+      <form
+        onSubmit={handleSendMessage}
+        className="p-3 bg-white border-t border-gray-100 flex items-center gap-2"
+      >
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Escribe un mensaje..."
+          className="flex-1 bg-gray-100 border-none rounded-2xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#00d1b2] outline-none transition-all"
+        />
+        <button
+          type="submit"
+          disabled={!inputValue.trim()}
+          className={`p-2.5 rounded-full transition-all ${inputValue.trim() ? "bg-[#7422ff] text-white shadow-md" : "bg-gray-200 text-gray-400 opacity-50"}`}
         >
-          <input
-            className="flex-1 bg-gray-100 rounded-2xl px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-[#00d1b2]/30 transition-all"
-            placeholder="Escribe tu mensaje..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            autoFocus
-          />
-          <button
-            type="submit"
-            className="bg-[#00d1b2] text-white p-2.5 rounded-xl hover:bg-[#00bfa5] shadow-lg transition-transform active:scale-90"
-          >
-            <Send size={18} />
-          </button>
-        </form>
-      ) : (
-        <div className="p-3 text-center bg-gray-50 border-t border-gray-100">
-          <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">
-            Powered by YapeMascot Engine
-          </p>
-        </div>
-      )}
+          <Send size={18} />
+        </button>
+      </form>
+
+      <div className="pb-2 text-center bg-white">
+        <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest">
+          YAPEMASCOT ENGINE 2026
+        </p>
+      </div>
     </div>
   );
 };
