@@ -96,7 +96,7 @@ export default function NavBar() {
                     : "text-white hover:bg-white/20"
                 } font-semibold px-3 py-1.5 rounded-full transition`}
               >
-                Únete a Yappe
+                Únete a Yape
               </Link>
               <Link
                 to="/nosotros"
@@ -106,7 +106,7 @@ export default function NavBar() {
                     : "text-white hover:bg-white/20"
                 } font-semibold px-3 py-1.5 rounded-full transition`}
               >
-                Nosotros
+                Sobre Nosotros
               </Link>
             <Link
                 to="/centrodeayuda"
