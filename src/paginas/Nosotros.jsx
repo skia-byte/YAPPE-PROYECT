@@ -9,7 +9,6 @@ import "swiper/css/pagination";
 export default function NosotrosYape() {
   return (
     <div className="bg-[#fcfaff] min-h-screen font-sans">
-      {/* BANNER PRINCIPAL: ESTILO VIBRA YAPE */}
       {/* CORRECCIÓN: Ajuste de h-[600px] a h-[auto] y pb-20 para que el contenido no choque con el fondo */}
       <section className="relative w-full h-[600px] md:h-[700px] flex items-center overflow-hidden bg-[#3b0f52]">
         {/* Fondo con los colores oficiales */}
@@ -25,7 +24,6 @@ export default function NosotrosYape() {
             <span className="inline-block px-5 py-2 bg-[#25d3c9] text-[#3b0f52] text-sm font-black uppercase tracking-[0.2em] rounded-xl mb-8 shadow-lg">
               #TALENTOYAPE
             </span>
-            {/* CORRECCIÓN: Ajuste de tamaño de fuente en móviles yleading-tight para evitar cortes */}
             <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight md:leading-[0.85] italic mb-6 drop-shadow-xl">
               Únete a nosotros y <br />
               <span className="text-[#25d3c9]">
@@ -36,7 +34,6 @@ export default function NosotrosYape() {
               No buscamos años de experiencia, buscamos ganas de transformar el
               Perú. Tu primer gran paso empieza aquí.
             </p>
-            {/* CORRECCIÓN: Asegurar que el botón no se pegue al fondo de la sección */}
             <Link
               to="/productos"
               className="px-10 py-5 bg-[#25d3c9] text-[#3b0f52] text-xl font-black rounded-2xl hover:scale-105 transition-all shadow-[0_10px_40px_rgba(37,211,201,0.4)]"
@@ -47,9 +44,68 @@ export default function NosotrosYape() {
         </div>
       </section>
 
+      {/* 3. SECCIÓN: CONOCE AL TEAM YAPPE  */}
+      <div className="mb-28 py-24 px-6 md:px-10 lg:px-20">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl sm:text-6xl font-black text-[#7422ff] uppercase italic tracking-tighter">
+            Conoce al <span className="text-[#00d1b2]">Team Yappe</span>
+          </h2>
+          <p className="text-gray-400 font-bold mt-2 uppercase tracking-widest text-[10px] sm:text-xs">
+            Directo desde nuestras oficinas 🎥
+          </p>
+        </div>
+
+        {/* VIDEO PRINCIPAL */}
+        <div className="mb-10 sm:mb-16 w-full">
+          <div className="relative w-full max-w-4xl mx-auto aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-[#7422ff]/20">
+            <iframe
+              className="w-full h-full absolute inset-0"
+              src="https://www.youtube.com/embed/rEgLiaEZ0u4?si=ksTRVeEUkUfLajG8"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
+
+            {/* CAPA DE TEXTO: pointer-events-none es clave para poder darle play al video */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-center justify-center pointer-events-none">
+              <span className="text-white text-2xl sm:text-4xl font-black uppercase italic tracking-widest"></span>
+            </div>
+          </div>
+        </div>
+
+        {/* FILA DE 3 VIDEOS (ABAJO DEL PRINCIPAL) */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
+          {[
+            { id: 1, cargo: "Tech Team", vid: "Y5pP-O3_S9I" },
+            { id: 2, cargo: "Product", vid: "E-tbBfSyWwU?si=h54aqBVdp0HoqXVG" },
+            { id: 3, cargo: "Creative", vid: "VIDEO_ID_3" },
+          ].map((item) => (
+            <div
+              key={item.id}
+              className="relative h-[300px] sm:h-[400px] rounded-[2rem] overflow-hidden shadow-xl group hover:scale-[1.02] transition-transform duration-500"
+            >
+              {/* FILA DE 3 VIDEOS (ABAJO DEL PRINCIPAL) */}
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+              >
+                <source src={item.vid} type="video/mp4" />
+              </video>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#7422ff]/80 to-transparent flex items-end p-6">
+                <p className="text-white font-black uppercase italic text-lg">
+                  {item.cargo}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
       {/* TESTIMONIOS: GRID DE 4 (2 ARRIBA, 2 ABAJO) */}
       {/* CORRECCIÓN: Padding lateral px-6 para asegurar espacio en móviles */}
-      <section className="py-24 px-6 md:px-10 lg:px-20">
+      <section className="py-24 px- md:px-10 lg:px-20">
         <div className="max-w-6xl mx-auto">
           {/* CORRECCIÓN: Ajuste de tamaño de fuente en móviles */}
           <h2 className="text-4xl md:text-6xl font-black text-[#3b0f52] mb-16 italic text-center leading-tight">
