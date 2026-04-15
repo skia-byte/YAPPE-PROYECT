@@ -6,7 +6,6 @@ import GestionReclamos from "../componentes/GestionReclamos";
 import GestionPostulaciones from "../componentes/GestionPostulaciones"; 
 import GestionSubirEmpleo from "../componentes/GestionSubirEmpleo";
 import Preguntas from "../componentes/Preguntas";
-
 export default function Intranet() {
   const { usuarioActual } = useAuth();
   const esAdmin = usuarioActual?.rol === "admin";
