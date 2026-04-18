@@ -17,11 +17,31 @@ export default function NosotrosYape() {
   const scrollMujeresRef = useRef(null);
 
   const mujeresYape = [
-    { id: 1, nombre: "Andrea Castro", rol: "Product Owner", img: mujer1, detalle: "Lidero equipos tecnológicos enfocados en crear soluciones que impactan a millones de peruanos diariamente." },
-    { id: 2, nombre: "Lucía Méndez", rol: "UX Designer", img: mujer2, detalle: "Diseño experiencias inclusivas. Aquí mi voz se escucha y mis ideas se transforman en funciones reales." },
-    { id: 3, nombre: "Milagros Vega", rol: "Software Engineer", img: mujer3, detalle: "Programar en Yape es un resto constante. Formo parte de una comunidad técnica increíble." },
-    { id: 4, nombre: "Valeria Ríos", rol: "Data Analyst", img: mujer4, detalle: "Transformo datos en estrategias. Yape me ha permitido crecer en un ambiente de total confianza." },
-    { id: 5, nombre: "Carla Espinoza", rol: "Talent Acquisition", img: mujer5, detalle: "Mi misión es encontrar el talento que mueva al país. Buscamos mujeres apasionadas." }
+    { id: 1, 
+      nombre: "Lucía Berrantes", 
+      rol: "Experiencia", 
+      img: mujer1, 
+      detalle: "Lidero equipos tecnológicos enfocados en crear soluciones que impactan a millones de peruanos diariamente." },
+    { id: 2, 
+      nombre: "Natalia Prieto", 
+      rol: "Estrategia de personas", 
+      img: mujer2, 
+      detalle: "Diseño experiencias inclusivas. Aquí mi voz se escucha y mis ideas se transforman en funciones reales." },
+    { id: 3, 
+      nombre: "Shen Tay Wo Chong", 
+      rol: "Tecnología", 
+      img: mujer3, 
+      detalle: "Programar en Yape es un resto constante. Formo parte de una comunidad técnica increíble." },
+    { id: 4, 
+      nombre: "Valeria Ríos", 
+      rol: "Data Analyst", 
+      img: mujer4, 
+      detalle: "Transformo datos en estrategias. Yape me ha permitido crecer en un ambiente de total confianza." },
+    { id: 5, 
+      nombre: "Carla Espinoza", 
+      rol: "Talent Acquisition", 
+      img: mujer5, 
+      detalle: "Mi misión es encontrar el talento que mueva al país. Buscamos mujeres apasionadas." }
   ];
 
   const handleScroll = (direction) => {

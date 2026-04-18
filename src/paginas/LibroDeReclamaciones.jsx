@@ -144,7 +144,7 @@ export default function LibroDeReclamaciones() {
                 </div>
                 <div>
                   <h3 className="text-xl font-black text-[#3b0f52] uppercase italic">Reclamo</h3>
-                  <p className="text-sm text-gray-400 font-medium">Disconformidad relacionada a los productos o servicios.</p>
+                  <p className="text-sm text-gray-400 font-medium">Disconformidad relacionada a algún retraso o mal funcionamiento.</p>
                 </div>
               </button>
               <button 
