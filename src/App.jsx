@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom"; // Se agregó BrowserRouter aquí
 import { lazy, Suspense } from "react";
 
 import { MascotProvider } from "./context/MascotContext";
@@ -28,50 +28,55 @@ const FormularioDePostulacion = lazy(
 function App() {
   return (
     <MascotProvider>
-      <ScrollToTop />
+      {/* Se envuelve todo en BrowserRouter con el basename de tu repositorio 
+          para que las rutas funcionen correctamente en GitHub Pages.
+      */}
+      <BrowserRouter basename="/YAPPE-PROYECT">
+        <ScrollToTop />
 
-      <Suspense
-        fallback={
-          <div
-            style={{
-              textAlign: "center",
-              marginTop: "10rem",
-              fontFamily: "sans-serif",
-              fontWeight: "900",
-              color: "#7e1d91",
-              fontStyle: "italic",
-            }}
-          >
-            Yo yapeo, tú yapeas, todos yapeamos ...
-          </div>
-        }
-      >
-        <Suspense fallback={<h1>Cargando...</h1>}>
-          <Routes>
-            {/* MainLayout envuelve a todas las rutas que llevan NavBar y Footer */}
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<Inicio />} />
-              <Route path="/nosotros" element={<Nosotros />} />
-              <Route path="/centrodeayuda" element={<CentrodeAyuda />} />
-              <Route path="/unete" element={<Unete />} />
-              <Route path="/perfil/:username" element={<Perfil />} />
-              <Route
-                path="/libro-de-reclamaciones"
-                element={<LibroDeReclamaciones />}
-              />
+        <Suspense
+          fallback={
+            <div
+              style={{
+                textAlign: "center",
+                marginTop: "10rem",
+                fontFamily: "sans-serif",
+                fontWeight: "900",
+                color: "#7e1d91",
+                fontStyle: "italic",
+              }}
+            >
+              Yo yapeo, tú yapeas, todos yapeamos ...
+            </div>
+          }
+        >
+          <Suspense fallback={<h1>Cargando...</h1>}>
+            <Routes>
+              {/* MainLayout envuelve a todas las rutas que llevan NavBar y Footer */}
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<Inicio />} />
+                <Route path="/nosotros" element={<Nosotros />} />
+                <Route path="/centrodeayuda" element={<CentrodeAyuda />} />
+                <Route path="/unete" element={<Unete />} />
+                <Route path="/perfil/:username" element={<Perfil />} />
+                <Route
+                  path="/libro-de-reclamaciones"
+                  element={<LibroDeReclamaciones />}
+                />
 
-              <Route path="/detalles-empleo/:id" element={<VerDetalles />} />
-              <Route
-                path="/postular/:id"
-                element={<FormularioDePostulacion />}
-              />
+                <Route path="/detalles-empleo/:id" element={<VerDetalles />} />
+                <Route
+                  path="/postular/:id"
+                  element={<FormularioDePostulacion />}
+                />
 
-              <Route path="*" element={<Inicio />} />
-            </Route>
-          </Routes>
-          <YapeMascot />
+                <Route path="*" element={<Inicio />} />
+              </Route>
+            </Routes>
+            <YapeMascot />
+          </Suspense>
         </Suspense>
-      </Suspense>
+      </BrowserRouter>
     </MascotProvider>
   );
 }
